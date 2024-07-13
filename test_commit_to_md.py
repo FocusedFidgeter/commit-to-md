@@ -18,7 +18,6 @@ class TestCommitToMdBehavior(unittest.IsolatedAsyncioTestCase):
             commits = await fetch_commits(session, repo_url)
         
         self.assertEqual(commits, [{"sha": "abc123"}])
-        pass
 
 
 class TestCommitToMd(unittest.IsolatedAsyncioTestCase):
@@ -34,7 +33,6 @@ class TestCommitToMd(unittest.IsolatedAsyncioTestCase):
             commits = await fetch_commits(session, repo_url)
         
         self.assertEqual(commits, [{"sha": "abc123"}])
-        pass
 
     @patch('aiohttp.ClientSession.get')
     async def test_fetch_diff(self, mock_get):
@@ -48,9 +46,8 @@ class TestCommitToMd(unittest.IsolatedAsyncioTestCase):
             diff = await fetch_diff(session, repo_url, sha)
         
         self.assertEqual(diff, "diff --git a/file.txt b/file.txt")
-        pass
 
-    @patch('openai.OpenAI.chat.Completion.create')
+    @patch('openai.Completion.create')
     async def test_get_ai_notes(self, mock_create):
         mock_create.return_value = AsyncMock()
         mock_create.return_value.choices = [{"message": {"content": "AI notes"}}]
@@ -59,7 +56,6 @@ class TestCommitToMd(unittest.IsolatedAsyncioTestCase):
         notes = await get_ai_notes(diff)
         
         self.assertEqual(notes, "AI notes")
-        pass
 
     @patch('builtins.open', new_callable=mock_open)
     async def test_write_markdown(self, mock_file):
@@ -71,7 +67,6 @@ class TestCommitToMd(unittest.IsolatedAsyncioTestCase):
         await write_markdown(commit, diff_files, output_dir)
         
         mock_file().write.assert_called_once_with("# Commit abc123\n\nInitial commit\n\n## Files Changed\n\n- file.txt\n")
-        pass
 
 
 if __name__ == '__main__':
