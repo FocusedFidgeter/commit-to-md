@@ -1,0 +1,4 @@
+OpenAI
+aiohttp
+pytest
+python-dotenv
